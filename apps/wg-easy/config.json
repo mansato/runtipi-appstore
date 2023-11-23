@@ -39,12 +39,6 @@
       "label": "Default DNS server",
       "required": false,
       "env_variable": "WIREGUARD_DNS"
-    },
-    {
-      "type": "number",
-      "label": "Custom entry port udp, add 51820 if default port",
-      "required": true,
-      "env_variable": "CUSTOM_PORT_UDP"
     }
   ],
   "supported_architectures": ["arm64", "amd64"]
