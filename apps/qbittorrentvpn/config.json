@@ -1,0 +1,22 @@
+{
+  "$schema": "../schema.json",
+  "name": "qBittorrentVpn",
+  "available": true,
+  "exposable": true,
+  "port": 8133,
+  "id": "qbittorrentvpn",
+  "tipi_version": 10,
+  "version": "4.6.1",
+  "categories": [
+    "utilities"
+  ],
+  "description": "qBittorrentVpn is a fast, easy, and free BitTorrent client.",
+  "short_desc": "Fast, easy, and free BitTorrent client",
+  "author": "qBittorrentVpn project",
+  "source": "https://github.com/binhex/arch-qbittorrentvpn",
+  "form_fields": [],
+  "supported_architectures": [
+    "arm64",
+    "amd64"
+  ]
+}
