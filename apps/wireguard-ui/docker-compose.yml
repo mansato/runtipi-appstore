@@ -1,0 +1,53 @@
+version: "3.7"
+services:
+  wireguard-ui:
+    container_name: wireguard-ui
+    image: ngoduykhanh/wireguard-ui:latest
+    restart: unless-stopped
+    volumes:
+      - ${APP_DATA_DIR}/data:/etc/wireguard
+      - ${APP_DATA_DIR}/db:/app/db
+    environment:
+      - SENDGRID_API_KEY
+      - EMAIL_FROM_ADDRESS
+      - EMAIL_FROM_NAME
+      - SESSION_SECRET
+      - WGUI_USERNAME=alpha
+      - WGUI_PASSWORD=this-unusual-password
+      - WG_CONF_TEMPLATE
+      - WGUI_MANAGE_START=false
+      - WGUI_MANAGE_RESTART=false
+    logging:
+      driver: json-file
+      options:
+        max-size: 50m
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    networks:
+      - tipi_main_network
+    labels:
+      # Main
+      traefik.enable: true
+      traefik.http.middlewares.wireguard-ui-web-redirect.redirectscheme.scheme: https
+      traefik.http.services.wireguard-ui.loadbalancer.server.port: 51821
+      # Web
+      traefik.http.routers.wireguard-ui-insecure.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.wireguard-ui-insecure.entrypoints: web
+      traefik.http.routers.wireguard-ui-insecure.service: wireguard-ui
+      traefik.http.routers.wireguard-ui-insecure.middlewares: wireguard-ui-web-redirect
+      # Websecure
+      traefik.http.routers.wireguard-ui.rule: Host(`${APP_DOMAIN}`)
+      traefik.http.routers.wireguard-ui.entrypoints: websecure
+      traefik.http.routers.wireguard-ui.service: wireguard-ui
+      traefik.http.routers.wireguard-ui.tls.certresolver: myresolver
+      # Local domain
+      traefik.http.routers.wireguard-ui-local-insecure.rule: Host(`wireguard-ui.${LOCAL_DOMAIN}`)
+      traefik.http.routers.wireguard-ui-local-insecure.entrypoints: web
+      traefik.http.routers.wireguard-ui-local-insecure.service: wireguard-ui
+      traefik.http.routers.wireguard-ui-local-insecure.middlewares: wireguard-ui-web-redirect
+      # Local domain secure
+      traefik.http.routers.wireguard-ui-local.rule: Host(`wireguard-ui.${LOCAL_DOMAIN}`)
+      traefik.http.routers.wireguard-ui-local.entrypoints: websecure
+      traefik.http.routers.wireguard-ui-local.service: wireguard-ui
+      traefik.http.routers.wireguard-ui-local.tls: true
