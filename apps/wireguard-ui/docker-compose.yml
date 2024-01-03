@@ -24,7 +24,6 @@ services:
     volumes:
       - ${APP_DATA_DIR}/config:/etc/wireguard
       - ${APP_DATA_DIR}/db:/app/db
-    network_mode: service:wireguard
     environment:
       - EMAIL_FROM_ADDRESS
       - EMAIL_FROM_NAME
