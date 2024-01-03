@@ -3,11 +3,8 @@
   "name": "Wireguard ui",
   "available": true,
   "exposable": true,
-  "port": 8082,
+  "port": 5000,
   "requirements": {
-    "ports": [
-      51820
-    ]
   },
   "id": "wireguard-ui",
   "tipi_version": 5,
@@ -24,7 +21,15 @@
       "type": "fqdnip",
       "label": "Your public IP address or domain name",
       "required": true,
-      "env_variable": "WIREGUARD_HOST"
+      "env_variable": "WIREGUARD_UI_HOST"
+    },
+    {
+      "type": "text",
+      "label": "Login",
+      "max": 50,
+      "min": 3,
+      "required": true,
+      "env_variable": "WIREGUARD_UI_USERNAME"
     },
     {
       "type": "password",
@@ -32,13 +37,21 @@
       "max": 50,
       "min": 3,
       "required": true,
-      "env_variable": "WIREGUARD_PASSWORD"
+      "env_variable": "WIREGUARD_UI_PASSWORD"
+    },
+    {
+      "type": "text",
+      "label": "Port",
+      "max": 5,
+      "min": 3,
+      "required": true,
+      "env_variable": "WIREGUARD_UI_PORT"
     },
     {
       "type": "ip",
       "label": "Default DNS server",
       "required": false,
-      "env_variable": "WIREGUARD_DNS"
+      "env_variable": "WIREGUARD_UI_DNS"
     }
   ],
   "supported_architectures": ["arm64", "amd64"]

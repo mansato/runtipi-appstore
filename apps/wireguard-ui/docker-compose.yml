@@ -6,16 +6,17 @@ services:
     restart: unless-stopped
     ports:
       - 5000:5000/tcp
+      - ${WIREGUARD_UI_PORT}:51820/udp
     volumes:
       - ${APP_DATA_DIR}/data:/etc/wireguard
       - ${APP_DATA_DIR}/db:/app/db
     environment:
-      - SENDGRID_API_KEY
       - EMAIL_FROM_ADDRESS
       - EMAIL_FROM_NAME
       - SESSION_SECRET
-      - WGUI_USERNAME=alpha
-      - WGUI_PASSWORD=this-unusual-password
+      - WGUI_ENDPOINT_ADDRESS=${WIREGUARD_UI_HOST}:${WIREGUARD_UI_PORT}
+      - WGUI_USERNAME=${WIREGUARD_UI_USERNAME}
+      - WGUI_PASSWORD=${WIREGUARD_UI_PASSWORD}
       - WG_CONF_TEMPLATE
       - WGUI_MANAGE_START=false
       - WGUI_MANAGE_RESTART=false
@@ -32,7 +33,6 @@ services:
       # Main
       traefik.enable: true
       traefik.http.middlewares.wireguard-ui-web-redirect.redirectscheme.scheme: https
-      traefik.http.services.wireguard-ui.loadbalancer.server.port: 51821
       # Web
       traefik.http.routers.wireguard-ui-insecure.rule: Host(`${APP_DOMAIN}`)
       traefik.http.routers.wireguard-ui-insecure.entrypoints: web
